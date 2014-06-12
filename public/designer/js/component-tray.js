@@ -7,24 +7,25 @@ define(
   function(Util, CeciDesigner, L10n, analytics, filer, request) {
     "use strict";
 
-    var fs = new filer.FileSystem({name: "component", provider: new filer.FileSystem.providers.Fallback()});
+    // var fs = new filer.FileSystem({name: "component", provider: new filer.FileSystem.providers.Fallback()});
 
 
-    fs.watch("/component/component-copy.html", function(event, file) {
-      console.log(event, file);
-        fs.readFile("/component/component-copy.html", "utf8", function(error, content) {
-          var link = document.createElement("link");
-          link.rel = "import";
-          link.href = "data:text/html;base64,"+btoa(content);
+    // fs.watch("/component/component.html", function(event, file) {
+    //   if(window.nimbleClicked) {
+    //     fs.readFile("/component/component.html", "utf8", function(error, content) {
 
-          document.head.appendChild(link);
-          DesignerTray.addComponentsFromRegistry();
-          setTimeout(function() {
-            DesignerTray.addComponentsFromRegistry();
-          },0);
-        });
+    //       document.addEventListener('CeciElementAdded', function(e) {
+    //         console.log(e.detail.localName);
+    //         DesignerTray.addComponentsFromRegistry();
+    //       });
 
-      });
+    //         var link = document.createElement("link");
+    //         link.rel = "import";
+    //         link.href = "data:text/html;base64,"+btoa(content);
+    //         document.head.appendChild(link);
+    //     });
+    //   }
+    // });
 
     var resolvePath = function(tag, url) {
       return document.createElement(tag).resolvePath(url);

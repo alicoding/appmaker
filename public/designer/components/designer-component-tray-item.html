@@ -9,30 +9,39 @@
         this.thumbnail = "/images/component-thumbnail-fallback.gif";
       },
       nimble: function (e) {
+        // window.nimbleClicked = false;
+        // var fs = new filer.FileSystem({
+        //     name: "component",
+        //     provider: new filer.FileSystem.providers.Fallback()
+        // });
 
-        var fs = new filer.FileSystem({name: "component", provider: new filer.FileSystem.providers.Fallback()});
-        // var fs2 = new filer.FileSystem({ provider: new filer.FileSystem.providers.IndexedDB() });
-
-        var sh = fs.Shell();
-        var componentsName = this.name.replace("ceci", "component");
-        // fs.mkdir("/component", function(errors) {
-          // if (errors) { throw errors; };
-          request.get("http://localhost:5001/component/mozilla-appmaker/" + componentsName + "/component.html", function(Er, resp) {
-            if (Er) { throw Er; };
-            request.get("http://localhost:5001/component/mozilla-appmaker/" + componentsName + "/component.css", function(eRr, res) {
-              if (eRr) { throw eRr; };
-              fs.writeFile("/component/component-copy.html", resp.text, function(err) {
-                fs.writeFile("/component/component.css", res.text, function(error) {
-                  if(!error && !err){
-                    window.open("http://localhost:5001/brackets/src/?" + componentsName, '_blank');
-                  } else {
-                    throw error;
-                  }
-                });
-              });
-            });
-          });
-      // });
+        // var sh = fs.Shell();
+        // var ccsName = this.name;
+        // var componentsName = ccsName.replace("ceci", "component");
+        // request.get("http://localhost:5001/component/mozilla-appmaker/" + componentsName + "/component.html",
+        //   function (error1, resp) {
+        //     if (error1) {
+        //         throw error1;
+        //     };
+        //     request.get("http://localhost:5001/component/mozilla-appmaker/" + componentsName + "/component.css",
+        //       function (error2, res) {
+        //         if (error2) {
+        //             throw error2;
+        //         };
+        //         var regexp = new RegExp(ccsName, 'g');
+        //         var newString = resp.text.replace(regexp, ccsName + "-remix");
+        //         fs.writeFile("/component/component.html", newString, function (error3) {
+        //             fs.writeFile("/component/component.css", res.text, function (error4) {
+        //                 if (!error3 && !error4) {
+        //                   window.nimbleClicked = true;
+        //                     window.open("http://localhost:5001/brackets/src/?" + componentsName, '_blank');
+        //                 } else {
+        //                     throw error3;
+        //                 }
+        //             });
+        //         });
+        //     });
+        // });
       }
     });
 
