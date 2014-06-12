@@ -2,16 +2,48 @@
   name="designer-component-tray-item"
   attributes="name description label author updatedat thumbnail">
   <script>
+  require(['filer', 'request'], function(filer, request) {
+    window.filer = filer;
     Polymer('designer-component-tray-item', {
       imageError : function(){
         this.thumbnail = "/images/component-thumbnail-fallback.gif";
+      },
+      nimble: function (e) {
+
+        var fs = new filer.FileSystem({name: "component", provider: new filer.FileSystem.providers.Fallback()});
+        // var fs2 = new filer.FileSystem({ provider: new filer.FileSystem.providers.IndexedDB() });
+
+        var sh = fs.Shell();
+        var componentsName = this.name.replace("ceci", "component");
+        // fs.mkdir("/component", function(errors) {
+          // if (errors) { throw errors; };
+          request.get("http://localhost:5001/component/mozilla-appmaker/" + componentsName + "/component.html", function(Er, resp) {
+            if (Er) { throw Er; };
+            request.get("http://localhost:5001/component/mozilla-appmaker/" + componentsName + "/component.css", function(eRr, res) {
+              if (eRr) { throw eRr; };
+              fs.writeFile("/component/component-copy.html", resp.text, function(err) {
+                fs.writeFile("/component/component.css", res.text, function(error) {
+                  if(!error && !err){
+                    window.open("http://localhost:5001/brackets/src/?" + componentsName, '_blank');
+                  } else {
+                    throw error;
+                  }
+                });
+              });
+            });
+          });
+      // });
       }
     });
+
+  });
+
   </script>
   <template>
 
     <link rel="stylesheet" href="/stylesheets/designer-component-tray-item.css">
     <div class="add-component component-card" name="{{name}}" show="true">
+    <div class="add-tooltip small" on-click="{{nimble}}">Edit in Nimble</div>
       <div class="add-tooltip">+</div>
       <div class="component-preview">
         <div class="image-wrapper"><img on-error="{{imageError}}" src="{{thumbnail}}"></div>

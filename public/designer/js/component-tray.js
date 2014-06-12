@@ -3,9 +3,28 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 define(
-  ["designer/utils", "ceci/ceci-designer", "l10n", "analytics"],
-  function(Util, CeciDesigner, L10n, analytics) {
+  ["designer/utils", "ceci/ceci-designer", "l10n", "analytics", "filer", "request"],
+  function(Util, CeciDesigner, L10n, analytics, filer, request) {
     "use strict";
+
+    var fs = new filer.FileSystem({name: "component", provider: new filer.FileSystem.providers.Fallback()});
+
+
+    fs.watch("/component/component-copy.html", function(event, file) {
+      console.log(event, file);
+        fs.readFile("/component/component-copy.html", "utf8", function(error, content) {
+          var link = document.createElement("link");
+          link.rel = "import";
+          link.href = "data:text/html;base64,"+btoa(content);
+
+          document.head.appendChild(link);
+          DesignerTray.addComponentsFromRegistry();
+          setTimeout(function() {
+            DesignerTray.addComponentsFromRegistry();
+          },0);
+        });
+
+      });
 
     var resolvePath = function(tag, url) {
       return document.createElement(tag).resolvePath(url);

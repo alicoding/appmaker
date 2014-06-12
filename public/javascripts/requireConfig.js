@@ -10,6 +10,8 @@ requirejs.config({
     "jquery": "../vendor/jquery/jquery.min",
 
     "l10n": "l10n",
+    "filer": "/vendor/filer/dist/filer",
+    "request": "/vendor/superagent/superagent",
 
     "jquery-ui": "../vendor/jquery-ui/ui/minified/jquery-ui.min",
 

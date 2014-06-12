@@ -180,13 +180,24 @@ app.post('/create', webmakerAuth.handlers.create);
 app.post('/logout', webmakerAuth.handlers.logout);
 app.post('/check-username', webmakerAuth.handlers.exists);
 
+
+var request = require("request");
+
+app.get( "/getproxyurl", function(req, resp) {
+      // We replaced all the event handlers with a simple call to readStream.pipe()
+  request({url: req.query.url, rejectUnauthorized: false }, function(err, res, body) {
+    resp.send(body);
+  });
+});
+
+
 app.get('/', routes.index);
 
 app.get('/about', routes.about);
 
 app.get('/contribute', routes.contribute);
 
-app.all('/designer', routes.designer);
+app.all('/designer', cors(), routes.designer);
 
 app.get('/testappdesigner', routes.testappdesigner);
 
