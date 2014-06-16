@@ -170,7 +170,6 @@
         this.ceci.name = this.gettext(this.localName) || ceciDefinition.name || this.localName;
 
         that.localized();
-        console.log("line number: 173", this.localName);
       },
       broadcast: function (name, data) {
         var broadcastElement = this.querySelector('ceci-broadcast[from="' + name + '"]');
@@ -237,7 +236,6 @@
         }
       },
       domReady: function () {
-        console.log("line number: 239", this.localName);
         document.dispatchEvent(new CustomEvent('CeciElementAdded', {bubbles: true, detail: this}));
       },
       gettext: function (keyname) {

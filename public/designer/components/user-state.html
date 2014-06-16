@@ -51,7 +51,7 @@
   <script>
   (function() {
 
-    function init(togetherjs_extension, l10n, jquery, application, tray, utils, reporter, analytics, persona, WebmakerAuthClient) {
+    function init(togetherjs_extension, l10n, jquery, application, tray, utils, reporter, analytics, WebmakerAuthClient) {
 
       var user = {
         email: '',
@@ -229,7 +229,7 @@
               application.renameApp(oldName, newName);
               analytics.event("Renamed App");
             } else {
-              reporter.errorReport(l10n.get("App names can't be blank."));
+              console.log(l10n.get("App names can't be blank."));
             }
           });
 
@@ -252,7 +252,7 @@
                   window.dispatchEvent(new CustomEvent("CeciAppSaveAs"));
                   analytics.event("Saved App As");
                 } else {
-                  reporter.errorReport(
+                  console.log(
                     l10n.get("Your app couldn't be saved."),
                     (err.responseJSON ? l10n.get("Reason:") + " " + l10n.get(err.responseJSON.error) : '')
                   );
@@ -278,7 +278,7 @@
                   reporter.consoleReport("App save.");
                   analytics.event("Saved App");
                 } else {
-                  reporter.errorReport(
+                  console.log(
                     l10n.get("Your app could not be saved at this time. Please try again."),
                     (err.responseJSON ? l10n.get("Reason:") + " " + l10n.get(err.responseJSON.error) : '')
                   );
@@ -300,7 +300,7 @@
               if(name === null) break;
             }
             if(!name) {
-              return reporter.errorReport("Save was cancelled.");
+              return console.log("Save was cancelled.");
             }
             // we have a name: publish!
             var alreadySaved = self.editingmode === "saved";
@@ -308,10 +308,10 @@
               if(err) {
                 if (data) {
                   // FIXME: will this route ever fire? The combination of an error + data seems unlikely
-                  reporter.errorReport("app was published, but updating failed");
+                  console.log("app was published, but updating failed");
                   analytics.event("Error Updating Published App", { nonInteraction: true });
                 } else {
-                  reporter.errorReport((alreadySaved? "updated " : '') + "app was not successfully published");
+                  console.log((alreadySaved? "updated " : '') + "app was not successfully published");
                   analytics.event("Error Publishing App", { nonInteraction: true });
                 }
                 return;
@@ -372,7 +372,7 @@
           this.refreshUserState();
         },
         appRenameFailed: function(){
-          reporter.errorReport(l10n.get("app rename failed"));
+          console.log(l10n.get("app rename failed"));
         },
         signinClick: function() {
           auth.login();
@@ -390,7 +390,7 @@
           };
 
           link.onerror = function (e) {
-            reporter.errorReport('Failed to load component at ' + url);
+            console.log('Failed to load component at ' + url);
             callback({
               error: 'Failed to load component',
               url: url,
@@ -401,13 +401,13 @@
           document.head.appendChild(link);
         },
         signalComponentError: function(err) {
-          reporter.errorReport(err);
+          console.log(err);
           if(arguments.length > 1) {
             Array.prototype.slice.call(arguments, 1).forEach(function(data) {
-              reporter.errorReport(data);
+              console.log(data);
             });
           }
-          reporter.errorReport(err);
+          console.log(err);
           return;
         },
         addComponentByURL: function (url) {
@@ -467,7 +467,7 @@
             });
           }
           catch (e) {
-            reporter.errorReport(e);
+            console.log(e);
           }
         },
         addComponent: function() {
@@ -678,7 +678,7 @@
                 noApps.style.display = "none";
               }
             } catch (e) {
-              reporter.errorReport(e);
+              console.log(e);
             }
           });
         },
@@ -713,7 +713,7 @@
                 self.addComponentToUI(val.url, val.name);
               });
             } catch (e) {
-              reporter.errorReport(e);
+              console.log(e);
             }
           });
         },
@@ -736,12 +736,12 @@
       togetherjs_extension.init(user);
     }
 
-   require(['designer/togetherjs', 'l10n', 'jquery', 'designer/application', 'designer/component-tray', 'designer/utils', 'reporter', 'analytics', 'persona', 'webmaker-auth-client'],
-      function(togetherjs_extension, l10n, jquery, application, tray, utils, reporter, analytics, persona, WebmakerAuthClient) {
-        init(togetherjs_extension, l10n, jquery, application, tray, utils, reporter, analytics, persona, WebmakerAuthClient);
+   require(['designer/togetherjs', 'l10n', 'jquery', 'designer/application', 'designer/component-tray', 'designer/utils', 'reporter', 'analytics', 'webmaker-auth-client'],
+      function(togetherjs_extension, l10n, jquery, application, tray, utils, reporter, analytics, WebmakerAuthClient) {
+        init(togetherjs_extension, l10n, jquery, application, tray, utils, reporter, analytics, WebmakerAuthClient);
       },
       function(err) {
-        reporter.errorReport('Failed to load a required module (analytics and/or persona and/or webmaker-auth-client)', err);
+        console.log('Failed to load a required module (analytics and/or persona and/or webmaker-auth-client)', err);
         require(['designer/togetherjs', 'l10n', 'jquery', 'designer/application', 'designer/component-tray', 'designer/utils', 'reporter'], init);
       }
     );

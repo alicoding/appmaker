@@ -7,25 +7,31 @@ define(
   function(Util, CeciDesigner, L10n, analytics, filer, request) {
     "use strict";
 
-    // var fs = new filer.FileSystem({name: "component", provider: new filer.FileSystem.providers.Fallback()});
+    var fs = new filer.FileSystem({name: "component", provider: new filer.FileSystem.providers.Fallback()});
 
-
-    // fs.watch("/component/component.html", function(event, file) {
-    //   if(window.nimbleClicked) {
-    //     fs.readFile("/component/component.html", "utf8", function(error, content) {
-
-    //       document.addEventListener('CeciElementAdded', function(e) {
-    //         console.log(e.detail.localName);
-    //         DesignerTray.addComponentsFromRegistry();
-    //       });
-
-    //         var link = document.createElement("link");
-    //         link.rel = "import";
-    //         link.href = "data:text/html;base64,"+btoa(content);
-    //         document.head.appendChild(link);
-    //     });
-    //   }
-    // });
+    fs.watch("/component", {recursive: true}, function(err, data) {
+      if(window.nimbleClicked) {
+      window.otherwindow.addEventListener('message', function(e) {
+        fs.readFile("/component/component.html", "utf8", function (error, content) {
+          fs.readFile("/component/component.css", "utf8", function (error2, content2) {
+            var regexp1 = new RegExp('./thumbnail.png', 'g');
+            var regexp2 = new RegExp('<link rel="stylesheet" href="component.css"></link>', 'g');
+            var regexp3 = new RegExp('<link rel="stylesheet" href="component.css">', 'g');
+            var regexp4 = new RegExp('<img src="thumbnail.png">', 'g');
+            var style = "<style>" + content2 + "</style>";
+            content = content.replace(regexp1, "").replace(regexp2, style).replace(regexp3, style).replace(regexp4, "");
+            var link = document.createElement("link");
+            link.rel = "import";
+            link.href = "data:text/html;base64," + btoa(content);
+            document.head.appendChild(link);
+            setTimeout(function () {
+              DesignerTray.addComponentsFromRegistry();
+            }, 1000)
+          });
+        });
+      });
+      }
+    });
 
     var resolvePath = function(tag, url) {
       return document.createElement(tag).resolvePath(url);

@@ -9,39 +9,39 @@
         this.thumbnail = "/images/component-thumbnail-fallback.gif";
       },
       nimble: function (e) {
-        // window.nimbleClicked = false;
-        // var fs = new filer.FileSystem({
-        //     name: "component",
-        //     provider: new filer.FileSystem.providers.Fallback()
-        // });
+        window.nimbleClicked = false;
+        var fs = new filer.FileSystem({
+            name: "component",
+            provider: new filer.FileSystem.providers.Fallback()
+        });
 
-        // var sh = fs.Shell();
-        // var ccsName = this.name;
-        // var componentsName = ccsName.replace("ceci", "component");
-        // request.get("http://localhost:5001/component/mozilla-appmaker/" + componentsName + "/component.html",
-        //   function (error1, resp) {
-        //     if (error1) {
-        //         throw error1;
-        //     };
-        //     request.get("http://localhost:5001/component/mozilla-appmaker/" + componentsName + "/component.css",
-        //       function (error2, res) {
-        //         if (error2) {
-        //             throw error2;
-        //         };
-        //         var regexp = new RegExp(ccsName, 'g');
-        //         var newString = resp.text.replace(regexp, ccsName + "-remix");
-        //         fs.writeFile("/component/component.html", newString, function (error3) {
-        //             fs.writeFile("/component/component.css", res.text, function (error4) {
-        //                 if (!error3 && !error4) {
-        //                   window.nimbleClicked = true;
-        //                     window.open("http://localhost:5001/brackets/src/?" + componentsName, '_blank');
-        //                 } else {
-        //                     throw error3;
-        //                 }
-        //             });
-        //         });
-        //     });
-        // });
+        var sh = fs.Shell();
+        var ccsName = this.name;
+        var componentsName = ccsName.replace("ceci", "component");
+        request.get("http://localhost:5001/component/mozilla-appmaker/" + componentsName + "/component.html",
+          function (error1, resp) {
+            if (error1) {
+                throw error1;
+            };
+            request.get("http://localhost:5001/component/mozilla-appmaker/" + componentsName + "/component.css",
+              function (error2, res) {
+                if (error2) {
+                    throw error2;
+                };
+                var regexp = new RegExp(ccsName, 'g');
+                var newString = resp.text.replace(regexp, ccsName + "-remix");
+                fs.writeFile("/component/component.html", newString, function (error3) {
+                    fs.writeFile("/component/component.css", res.text, function (error4) {
+                        if (!error3 && !error4) {
+                          window.nimbleClicked = true;
+                          window.otherwindow = window.open("http://localhost:5001/brackets/src/?" + componentsName, 'myWindow');
+                        } else {
+                            throw error3;
+                        }
+                    });
+                });
+            });
+        });
       }
     });
 
@@ -52,7 +52,7 @@
 
     <link rel="stylesheet" href="/stylesheets/designer-component-tray-item.css">
     <div class="add-component component-card" name="{{name}}" show="true">
-    <div class="add-tooltip small" on-click="{{nimble}}">Edit in Nimble</div>
+    <div class="add-tooltip small" on-click="{{nimble}}">Remix in Nimble</div>
       <div class="add-tooltip">+</div>
       <div class="component-preview">
         <div class="image-wrapper"><img on-error="{{imageError}}" src="{{thumbnail}}"></div>
